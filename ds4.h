@@ -6,13 +6,14 @@
 #include <iomanip>
 #include <iostream>
 #include <linux/joystick.h>
+#include <string>
 #include <sys/ioctl.h>
 #include <unistd.h>
 #include <vector>
 
 // 構造体とかの定義
 struct error {
-  char message[255];
+  std::string message;
 };
 struct ds4form {
   std::vector<int> joy_axis;
@@ -80,11 +81,12 @@ ds4::ds4() {
   stability.joy_axis.resize(num_of_axis_, 0);
 
   if (reception.joy_axis.size() != 8) {
-    error e = {"axis are few"};
+    error e = {"axis are few " + std::to_string(stability.joy_button.size())};
     throw e;
   }
   if (reception.joy_button.size() != 14) {
-    error e = {"buttons are few"};
+    error e = {"buttons are few " +
+               std::to_string(stability.joy_button.size())};
     throw e;
   }
 
