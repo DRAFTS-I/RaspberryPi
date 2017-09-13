@@ -9,9 +9,13 @@
 auto main(int argc, char **argv) -> int {
   try {
     std::shared_ptr<controller::base> ctrl;
-    if (argc > 1 && std::string(argv[1]) == "ds4")
-      ctrl = std::make_shared<controller::ds4>();
-    else
+    for (int i = 0; i < argc; i++) {
+      if (std::string(argv[i]) == "-4")
+        ctrl = std::make_shared<controller::ds4>();
+      else if (std::string(argv[i]) == "-3")
+        ctrl = std::make_shared<controller::ds3>();
+    }
+    if (ctrl == nullptr)
       ctrl = std::make_shared<controller::ds3>();
 
     std::thread th([&ctrl] { ctrl->run(); });
